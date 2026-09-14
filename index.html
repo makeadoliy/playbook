@@ -1,0 +1,1145 @@
+<title>Industry Growth Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#07090a;
+    --bg-panel:#0e1210;
+    --bg-panel-2:#121714;
+    --line:#212b23;
+    --line-bright:#3a4a3c;
+    --green:#75a53a;
+    --green-bright:#a4dd63;
+    --green-dim:#4d6e2a;
+    --ink:#f2f4ef;
+    --ink-muted:#93a091;
+    --ink-faint:#5c665b;
+    --mono:'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --display:'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --body:'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --radius:14px;
+    --maxw:1240px;
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--bg-deep);}
+  body{
+    margin:0;
+    background:var(--bg-deep);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--green-dim); color:var(--ink);}
+  a{color:inherit;}
+  img{max-width:100%;}
+  h1,h2,h3,h4{font-family:var(--display); margin:0; text-wrap:balance; font-weight:800;}
+  p{margin:0;}
+  button{font-family:inherit; cursor:pointer;}
+
+  :focus-visible{outline:2px solid var(--green-bright); outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding-inline:24px;
+  }
+
+  /* ---------- background texture (fixed, global) ---------- */
+  .noise-layer{
+    position:fixed; inset:0; pointer-events:none; z-index:-1;
+    background-image:
+      radial-gradient(ellipse 900px 500px at 18% -10%, rgba(117,165,58,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(117,165,58,0.08), transparent 60%),
+      linear-gradient(var(--bg-deep), var(--bg-deep));
+  }
+  .grid-layer{
+    position:fixed; inset:0; pointer-events:none; z-index:-1; opacity:0.35;
+    background-image:
+      linear-gradient(to right, rgba(117,165,58,0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(117,165,58,0.055) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 100% 70% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* ---------- top nav ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,9,10,0.78);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .logo{display:flex; align-items:center; gap:10px; text-decoration:none; background:none; border:none; padding:0;}
+  .logo-mark{
+    width:16px; height:16px; flex:none;
+    background:var(--green);
+    clip-path:polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    box-shadow:0 0 14px rgba(164,221,99,0.75);
+  }
+  .logo-word{
+    font-family:var(--display); font-weight:800; font-size:16px; letter-spacing:0.14em;
+    color:#fff;
+  }
+  .nav-links{display:flex; align-items:center; gap:28px; list-style:none; margin:0; padding:0;}
+  .nav-links button{
+    background:none; border:none; color:var(--ink-muted); font-family:var(--mono);
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase; padding:6px 2px;
+    border-bottom:1px solid transparent; transition:color .2s ease, border-color .2s ease;
+  }
+  .nav-links button:hover, .nav-links button.active{color:var(--ink); border-color:var(--green);}
+  .live-pill{
+    display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px;
+    letter-spacing:0.14em; color:var(--green-bright); text-transform:uppercase; white-space:nowrap;
+  }
+  .live-dot{width:6px; height:6px; border-radius:50%; background:var(--green-bright); box-shadow:0 0 8px var(--green-bright); animation:pulse-dot 2.2s ease-in-out infinite;}
+  @keyframes pulse-dot{0%,100%{opacity:1;} 50%{opacity:.35;}}
+  @media (max-width:820px){
+    .topnav-inner{flex-wrap:wrap; row-gap:12px;}
+    .live-pill{display:none;}
+    .nav-links{order:3; width:100%; justify-content:center; gap:18px;}
+    .nav-links button{font-size:11px;}
+  }
+
+  /* ---------- section labels ---------- */
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11px; letter-spacing:0.22em; text-transform:uppercase;
+    color:var(--green-bright); margin-bottom:16px;
+  }
+  .eyebrow::before{content:''; width:18px; height:1px; background:var(--green-bright);}
+
+  /* ---------- views ---------- */
+  .view{display:none;}
+  .view.active{display:block;}
+
+  /* ================= HOME ================= */
+
+  .hero{position:relative; padding:96px 0 64px; overflow:hidden;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem); line-height:0.98; letter-spacing:-0.01em;
+    color:#fff;
+  }
+  .hero h1 span{color:var(--green-bright);}
+  .hero-sub{
+    margin-top:22px; font-size:1.15rem; color:var(--ink-muted); max-width:46ch;
+  }
+  .status-row{
+    margin-top:32px; display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center;
+    font-family:var(--mono); font-size:12px; letter-spacing:0.08em; color:var(--ink-muted);
+  }
+  .status-ready{color:var(--green-bright); display:flex; align-items:center; gap:8px;}
+  .stat-strip{display:flex; gap:28px; margin-top:44px; flex-wrap:wrap;}
+  .stat{font-family:var(--mono);}
+  .stat b{display:block; font-family:var(--display); font-size:1.9rem; color:#fff; font-weight:700;}
+  .stat span{font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-faint);}
+
+  .hero-visual{position:relative; aspect-ratio:1/1; max-height:440px;}
+  .hero-visual canvas{width:100%; height:100%; display:block;}
+  .hero-visual-ring{
+    position:absolute; inset:8%; border:1px solid var(--line-bright); border-radius:50%;
+    opacity:0.5;
+  }
+
+  /* ---------- explorer ---------- */
+  .section{padding:80px 0;}
+  .section-head{display:flex; flex-direction:column; gap:10px; margin-bottom:44px;}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem); color:#fff;}
+  .section-head p{color:var(--ink-muted); max-width:56ch; font-size:1.02rem;}
+
+  .industry-grid{
+    display:grid; grid-template-columns:repeat(4, 1fr); gap:18px;
+  }
+  @media (max-width:1080px){.industry-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.industry-grid{grid-template-columns:1fr;}}
+
+  .industry-card{
+    position:relative; text-align:left; padding:26px 22px; border-radius:var(--radius);
+    background:linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+    border:1px solid var(--line);
+    overflow:hidden; transition:transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    display:flex; flex-direction:column; gap:14px; min-height:230px;
+  }
+  .industry-card::before{
+    content:''; position:absolute; inset:0; padding:1px; border-radius:inherit;
+    background:conic-gradient(from var(--ang,0deg), transparent 0 70%, var(--green-bright) 85%, transparent 100%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude;
+    opacity:0; transition:opacity .35s ease;
+  }
+  .industry-card:hover{transform:translateY(-4px); border-color:var(--line-bright); box-shadow:0 18px 40px -18px rgba(117,165,58,0.35);}
+  .industry-card:hover::before{opacity:1; animation:spin-border 2.4s linear infinite;}
+  @keyframes spin-border{to{--ang:360deg;}}
+  @property --ang{syntax:'<angle>'; inherits:true; initial-value:0deg;}
+
+  .industry-icon{
+    width:38px; height:38px; border-radius:9px; background:rgba(117,165,58,0.12);
+    border:1px solid rgba(117,165,58,0.35); display:flex; align-items:center; justify-content:center;
+    color:var(--green-bright);
+  }
+  .industry-card h3{font-size:1.15rem; color:#fff;}
+  .industry-card .sub{font-size:12.5px; color:var(--ink-faint); font-family:var(--mono);}
+  .industry-card .desc{font-size:13.5px; color:var(--ink-muted); flex:1;}
+  .industry-card .foot{
+    display:flex; align-items:center; justify-content:space-between; font-family:var(--mono);
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-faint);
+    padding-top:12px; border-top:1px solid var(--line);
+  }
+  .industry-card .foot .go{color:var(--ink-faint); transition:color .25s ease, transform .25s ease; display:flex; align-items:center; gap:6px;}
+  .industry-card:hover .foot .go{color:var(--green-bright); transform:translateX(2px);}
+
+  /* ---------- growth system flow ---------- */
+  .flow-wrap{position:relative; padding:46px 0 10px;}
+  .flow-track{
+    display:grid; grid-template-columns:repeat(7,1fr); gap:0; position:relative;
+  }
+  .flow-line{
+    position:absolute; left:0; right:0; top:19px; height:2px; background:var(--line);
+    z-index:0;
+  }
+  .flow-line-glow{
+    position:absolute; top:0; left:0; height:2px; width:40%; border-radius:2px;
+    background:linear-gradient(90deg, transparent, var(--green-bright), transparent);
+    animation:travel 5s linear infinite;
+    box-shadow:0 0 10px var(--green-bright);
+  }
+  @keyframes travel{0%{left:-40%;} 100%{left:100%;}}
+  .flow-step{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; padding:0 6px;}
+  .flow-node{
+    width:40px; height:40px; border-radius:50%; background:var(--bg-panel-2); border:1px solid var(--green-dim);
+    display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:12px; color:var(--green-bright);
+  }
+  .flow-step h4{font-size:13px; letter-spacing:0.08em; color:var(--ink); text-transform:uppercase; font-family:var(--mono); font-weight:600;}
+  @media (max-width:900px){
+    .flow-track{grid-template-columns:1fr; gap:28px;}
+    .flow-line, .flow-line-glow{display:none;}
+  }
+
+  /* ---------- strategy modules ---------- */
+  .module-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:900px){.module-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.module-grid{grid-template-columns:1fr;}}
+  .module-card{
+    padding:24px; border-radius:var(--radius); border:1px solid var(--line);
+    background:var(--bg-panel); position:relative;
+  }
+  .module-card .n{font-family:var(--mono); font-size:11px; color:var(--green-bright); letter-spacing:0.14em;}
+  .module-card h3{font-size:1.05rem; margin-top:10px; color:#fff;}
+  .module-card p{font-size:13.5px; color:var(--ink-muted); margin-top:8px;}
+
+  footer{border-top:1px solid var(--line); padding:36px 0; text-align:center; color:var(--ink-faint); font-family:var(--mono); font-size:11.5px; letter-spacing:0.08em;}
+
+  /* labels set in the sans serif mono slot read better a touch heavier */
+  .eyebrow, .nav-links button, .live-pill, .status-row, .stat span, .module-card .n, footer{font-weight:600;}
+
+  .nav-brand{display:flex; align-items:center; gap:10px; text-decoration:none; background:none; border:none; padding:0;}
+  .nav-brand img{height:22px; width:auto; display:block;}
+
+</style>
+
+<div class="noise-layer"></div>
+<div class="grid-layer"></div>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <button class="logo" data-nav="home" aria-label="Adoliy Playbook home">
+      <img src="data:image/png;base64,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" alt="Adoliy" style="height:36px;width:auto;display:block;">
+    </button>
+    <ul class="nav-links">
+      <li><button data-scroll="hero" class="active">Playbook</button></li>
+      <li><button data-scroll="explorer">Industries</button></li>
+      <li><button data-scroll="modules">Strategies</button></li>
+      <li><button id="searchOpen">Search</button></li>
+    </ul>
+    <div class="live-pill"><span class="live-dot"></span> Live System</div>
+  </div>
+</nav>
+
+<main id="app"></main>
+
+<footer>ADOLIY BUSINESS SOLUTION &mdash; INTERNAL STRATEGY INTELLIGENCE &mdash; KERALA, INDIA</footer>
+
+<div class="search-overlay" id="searchOverlay" hidden>
+  <div class="search-panel">
+    <div class="search-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="searchInput" type="text" placeholder="Search industries or strategies" autocomplete="off">
+      <button id="searchClose" aria-label="Close search">Esc</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<style>
+  /* ---------- search overlay ---------- */
+  .search-overlay{
+    position:fixed; inset:0; z-index:100; background:rgba(7,9,10,0.82); backdrop-filter:blur(6px);
+    display:flex; align-items:flex-start; justify-content:center; padding-top:12vh;
+  }
+  .search-overlay[hidden]{display:none;}
+  .search-panel{
+    width:min(560px, 90vw); background:var(--bg-panel-2); border:1px solid var(--line-bright);
+    border-radius:var(--radius); box-shadow:0 30px 80px -20px rgba(0,0,0,0.6); overflow:hidden;
+  }
+  .search-input-row{display:flex; align-items:center; gap:12px; padding:16px 18px; border-bottom:1px solid var(--line); color:var(--ink-muted);}
+  .search-input-row input{
+    flex:1; background:none; border:none; color:var(--ink); font-family:var(--body); font-size:15px; outline:none;
+  }
+  .search-input-row button{background:none; border:1px solid var(--line); color:var(--ink-faint); font-family:var(--mono); font-size:11px; padding:4px 8px; border-radius:6px;}
+  .search-results{max-height:50vh; overflow-y:auto; padding:8px;}
+  .search-item{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; border-radius:9px;
+    color:var(--ink-muted); font-size:13.5px;
+  }
+  .search-item:hover, .search-item:focus-visible{background:rgba(117,165,58,0.1); color:var(--ink);}
+  .search-item b{color:var(--ink); font-weight:600;}
+  .search-empty{padding:20px; text-align:center; color:var(--ink-faint); font-family:var(--mono); font-size:12px;}
+
+  /* ---------- industry detail view ---------- */
+  .ind-hero{padding:64px 0 40px; position:relative;}
+  .back-btn{
+    display:inline-flex; align-items:center; gap:8px; background:none; border:1px solid var(--line);
+    color:var(--ink-muted); font-family:var(--mono); font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    padding:8px 14px; border-radius:100px; margin-bottom:28px; transition:border-color .2s ease, color .2s ease;
+  }
+  .back-btn:hover{border-color:var(--green); color:var(--ink);}
+  .ind-hero .tag{font-family:var(--mono); font-size:12px; letter-spacing:0.18em; color:var(--green-bright); text-transform:uppercase;}
+  .ind-hero h1{font-size:clamp(2.2rem,5vw,3.6rem); color:#fff; margin-top:10px;}
+  .ind-hero .sub-desc{color:var(--ink-muted); max-width:60ch; margin-top:16px; font-size:1.05rem;}
+
+  .tabbar{
+    display:flex; gap:6px; overflow-x:auto; padding:6px 0 18px; margin-bottom:36px; border-bottom:1px solid var(--line);
+    scrollbar-width:none;
+  }
+  .tabbar::-webkit-scrollbar{display:none;}
+  .tabbar button{
+    flex:none; background:none; border:1px solid var(--line); color:var(--ink-muted); font-family:var(--mono);
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:9px 16px; border-radius:100px;
+    transition:all .2s ease;
+  }
+  .tabbar button.active{color:#07090a; background:var(--green-bright); border-color:var(--green-bright);}
+  .tabbar button:hover:not(.active){border-color:var(--line-bright); color:var(--ink);}
+
+  .panel{display:none;}
+  .panel.active{display:block; animation:reveal .4s ease both;}
+  @keyframes reveal{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+
+  .snap-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:8px;}
+  @media (max-width:980px){.snap-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.snap-grid{grid-template-columns:1fr;}}
+  .snap-card{padding:18px; border-radius:12px; background:var(--bg-panel); border:1px solid var(--line);}
+  .snap-card .k{font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:8px;}
+  .snap-card .v{font-size:14px; color:var(--ink); line-height:1.4;}
+
+  .subhead{font-size:1.4rem; color:#fff; margin-bottom:18px;}
+
+  .opp-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  @media (max-width:760px){.opp-grid{grid-template-columns:1fr;}}
+  .opp-card{border:1px solid var(--line); border-radius:12px; background:var(--bg-panel); overflow:hidden;}
+  .opp-card summary{
+    list-style:none; cursor:pointer; padding:16px 18px; display:flex; align-items:center; justify-content:space-between;
+    gap:12px; font-weight:600; color:var(--ink); font-size:14.5px;
+  }
+  .opp-card summary::-webkit-details-marker{display:none;}
+  .opp-card summary .plus{font-family:var(--mono); color:var(--green-bright); transition:transform .2s ease; flex:none;}
+  .opp-card[open] summary .plus{transform:rotate(45deg);}
+  .opp-card .body{padding:0 18px 18px; color:var(--ink-muted); font-size:13.5px;}
+
+  .eco-wrap{position:relative; padding:20px 0 8px;}
+  .eco-diagram{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; position:relative;}
+  .eco-node{
+    display:flex; flex-direction:column; align-items:center; gap:8px; width:104px; text-align:center;
+  }
+  .eco-dot{
+    width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:var(--bg-panel); border:1px solid var(--line); color:var(--ink-faint); font-family:var(--mono); font-size:10.5px;
+    transition:all .3s ease;
+  }
+  .eco-node.strong .eco-dot{border-color:var(--green-bright); color:var(--green-bright); box-shadow:0 0 22px rgba(164,221,99,0.25); background:rgba(117,165,58,0.08);}
+  .eco-node span{font-size:11.5px; color:var(--ink-muted); font-family:var(--mono); letter-spacing:0.04em;}
+  .eco-node.strong span{color:var(--ink);}
+
+  .pillar-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  @media (max-width:760px){.pillar-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:480px){.pillar-grid{grid-template-columns:1fr;}}
+  .pillar-chip{padding:14px 16px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); font-size:13px; color:var(--ink);}
+
+  .idea-list{display:flex; flex-direction:column; gap:10px; margin-top:22px;}
+  .idea-row{display:flex; gap:14px; padding:14px 16px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); font-size:13.5px; color:var(--ink-muted);}
+  .idea-row .dot{flex:none; width:6px; height:6px; border-radius:50%; background:var(--green-bright); margin-top:7px;}
+
+  .funnel-track{display:grid; grid-template-columns:repeat(6,1fr); gap:10px;}
+  @media (max-width:900px){.funnel-track{grid-template-columns:repeat(3,1fr);}}
+  @media (max-width:520px){.funnel-track{grid-template-columns:1fr 1fr;}}
+  .funnel-step{padding:16px 14px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); position:relative;}
+  .funnel-step .num{font-family:var(--mono); font-size:10px; color:var(--green-bright); letter-spacing:0.1em;}
+  .funnel-step h5{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.05em; color:#fff; margin:8px 0;}
+  .funnel-step p{font-size:12px; color:var(--ink-muted); line-height:1.4;}
+
+  .phase-track{display:flex; flex-direction:column; gap:0; margin-top:8px;}
+  .phase-row{display:grid; grid-template-columns:64px 1fr; gap:18px; padding:18px 0; border-bottom:1px solid var(--line); position:relative;}
+  .phase-row:last-child{border-bottom:none;}
+  .phase-num{font-family:var(--display); font-size:1.6rem; color:var(--green-dim); font-weight:700;}
+  .phase-row.done .phase-num, .phase-row .phase-num{color:var(--green-bright);}
+  .phase-body h5{font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; color:#fff; margin-bottom:6px;}
+  .phase-body p{font-size:13.5px; color:var(--ink-muted);}
+
+  .kpi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  @media (max-width:760px){.kpi-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:480px){.kpi-grid{grid-template-columns:1fr;}}
+  .kpi-chip{padding:14px 16px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); font-size:13px; color:var(--ink); display:flex; gap:10px; align-items:flex-start;}
+  .kpi-chip .ico{flex:none; color:var(--green-bright); margin-top:1px;}
+
+  .service-list{display:flex; flex-direction:column; gap:10px; margin-top:16px;}
+  .service-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 16px; border-radius:10px; background:var(--bg-panel); border:1px solid var(--line); font-size:13.5px; color:var(--ink);}
+  .service-row .tagpill{font-family:var(--mono); font-size:10px; color:var(--green-bright); border:1px solid var(--green-dim); padding:3px 8px; border-radius:100px; letter-spacing:0.08em;}
+
+  .take-block{
+    margin-top:52px; padding:28px; border-radius:var(--radius); border:1px solid var(--line);
+    background:linear-gradient(160deg, rgba(117,165,58,0.08), transparent 60%), var(--bg-panel);
+    position:relative;
+  }
+  .take-block .eyebrow{margin-bottom:12px;}
+  .take-block p{font-size:15px; color:var(--ink); line-height:1.7; max-width:78ch;}
+
+  .tabbar button, .back-btn, .ind-hero .tag, .snap-card .k, .industry-card .sub, .industry-card .foot,
+  .funnel-step .num, .funnel-step h5, .phase-body h5, .search-input-row button, .eco-node span,
+  .service-row .tagpill, .search-item span:last-child{font-weight:600;}
+
+  .grid2{display:grid; grid-template-columns:1fr; gap:0;}
+</style>
+
+<script>
+(function(){
+  "use strict";
+
+  var FUNNEL = ["Awareness","Engagement","Lead","Trial / Visit","Conversion","Retargeting"];
+  var PHASES = ["Foundation","Momentum","Acquisition","Conversion","Scale"];
+  var GROWTH_SYSTEM = ["Discover","Position","Create","Attract","Convert","Retain","Grow"];
+  var CHANNELS = ["Instagram","Facebook","Google","Website","WhatsApp","YouTube","Influencers","Offline"];
+
+  var MODULES = [
+    {n:"01", name:"Momentum Marketing", desc:"Build visibility, consistency and brand presence week after week."},
+    {n:"02", name:"Performance Marketing", desc:"Generate measurable enquiries and conversions on paid channels."},
+    {n:"03", name:"Local Marketing", desc:"Capture customers already searching within the local market."},
+    {n:"04", name:"Content System", desc:"Build authority, trust and attention through a repeatable pillar structure."},
+    {n:"05", name:"Conversion System", desc:"Turn enquiries and site visits into paying, booked customers."},
+    {n:"06", name:"Retention and Referral", desc:"Increase customer lifetime value and organic word of mouth growth."}
+  ];
+
+  function icon(name){
+    var icons = {
+      healthcare:'<path d="M12 21s-7.5-4.8-10-9.6C.4 7.6 2.6 4 6.3 4c2 0 3.5 1.1 4.2 2.6L12 8l1.5-1.4C14.2 5.1 15.7 4 17.7 4 21.4 4 23.6 7.6 22 11.4 19.5 16.2 12 21 12 21z"/>',
+      fitness:'<path d="M4 8v8M20 8v8M2 12h2M20 12h2M7 6v12M17 6v12M7 12h10"/>',
+      education:'<path d="M2 8l10-5 10 5-10 5-10-5z"/><path d="M6 10.5V16c0 1.4 3 3 6 3s6-1.6 6-3v-5.5"/>',
+      realestate:'<path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/>',
+      food:'<path d="M6 3v7a3 3 0 003 3v8M6 3v10M9 3v10M12 3v7a3 3 0 003 3M15 3c-2 1-2 5-2 7s.5 4 2 4v7"/>',
+      fashion:'<path d="M6 3l6 4 6-4M6 3L3 8l3 3v10h12V11l3-3-3-5"/><path d="M9 3a3 3 0 006 0"/>',
+      construction:'<path d="M3 21l6-6M13 11l7-7 3 3-7 7M2 22l4-1 9-9-3-3-9 9-1 4z"/>',
+      retail:'<path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8a3 3 0 016 0"/>'
+    };
+    return icons[name] || icons.retail;
+  }
+
+  var INDUSTRIES = [
+    {
+      id:"healthcare", name:"Healthcare", icon:"healthcare",
+      sub:"Hospitals, Clinics, Dental, Diagnostics, Pharmacy, Wellness",
+      tag:"Trust built before the first visit",
+      description:"Patients research quietly online long before they ever call. Whoever looks most credible on Google and Instagram gets the appointment.",
+      snapshot:{
+        customerType:"Patients and caregivers deciding under discomfort or time pressure",
+        primaryGoal:"Fill appointment slots and build a reputation as the safe, competent choice",
+        platforms:"Google, Instagram, YouTube, WhatsApp",
+        coreOffer:"Consultations, procedures, diagnostic packages, checkups",
+        conversion:"Phone call or WhatsApp booking"
+      },
+      opportunities:[
+        {title:"Video builds trust fast", desc:"A doctor answering real questions on camera converts better than any brochure or paid ad."},
+        {title:"Local search is wide open", desc:"Most clinics under invest in Google presence, so consistent effort can outrank rivals within months."},
+        {title:"Preventive packages upsell easily", desc:"Checkup and wellness packages are an easy add for a patient who already trusts the brand."},
+        {title:"Reviews compound over time", desc:"A steady stream of fresh Google reviews becomes a genuine, hard to copy advantage."}
+      ],
+      channels:{instagram:0.75, facebook:0.6, google:1, website:0.7, whatsapp:0.85, youtube:0.5, influencers:0.3, offline:0.4},
+      pillars:["Doctor spotlight and credentials","Patient education explainers","Myth versus fact","Facility and hygiene standards","Patient stories with consent","Seasonal health campaigns"],
+      ideas:["A reel where the doctor answers the three questions patients ask most before a procedure","A day in the clinic series showing hygiene and care standards","A simple animated explainer for a common procedure","Patient journey stories focused on outcome and care, always with consent"],
+      funnelNotes:[
+        "Introduce the clinic and its specialities to a cold local audience.",
+        "Educational reels build familiarity before anyone needs to book.",
+        "Lead ads capture contact details for specific high value services.",
+        "A free or discounted checkup nudges warm leads toward a first visit.",
+        "Booking is confirmed and tracked through WhatsApp or a call log.",
+        "Past patients due for a follow up are brought back automatically."
+      ],
+      phaseNotes:[
+        "Clean up the Google profile, gather first reviews, set the content rhythm.",
+        "Publish doctor and patient content weekly, respond to every enquiry fast.",
+        "Launch lead ads for flagship services with a clear booking incentive.",
+        "Tighten WhatsApp response time and track enquiry to booking rate.",
+        "Add checkup packages, corporate tie ups and referral incentives."
+      ],
+      kpis:["Cost per booked appointment","Google profile calls and direction requests","Review count and average rating","Website to WhatsApp conversion rate","Repeat visit and referral rate"],
+      services:["Google Business Profile management","Monthly content and reels production","Meta and Google ad management","WhatsApp booking system setup","Service specific landing page"],
+      take:"Healthcare marketing wins on trust, not cleverness. The clinics that grow fastest are rarely the flashiest, they are the ones patients feel safe choosing because the doctor looks credible online and someone answers WhatsApp quickly. Our job is consistency and responsiveness more than creative flair."
+    },
+    {
+      id:"fitness", name:"Fitness and Gym", icon:"fitness",
+      sub:"Gyms, Studios, Personal Training, Sports Academies, Yoga",
+      tag:"Community beats discounts",
+      description:"Members join on motivation and leave on boredom. The gyms that retain people sell belonging, not just equipment.",
+      snapshot:{
+        customerType:"Local residents and professionals within a short travel radius",
+        primaryGoal:"Fill memberships and keep churn low past the critical early weeks",
+        platforms:"Instagram, Facebook, Google, WhatsApp",
+        coreOffer:"Memberships, personal training, batch coaching, transformation programs",
+        conversion:"Free trial class, closed in person"
+      },
+      opportunities:[
+        {title:"Transformation stories persuade", desc:"Real before and after results, shown with consent, outsell any discount offer."},
+        {title:"Community reduces churn", desc:"Events, challenges and member spotlights keep people showing up past week eight."},
+        {title:"Corporate and student batches", desc:"Steady enquiry volume outside the January rush, filling off season gaps."},
+        {title:"Niche positioning wins locally", desc:"A focused offer, such as women only batches, beats competing purely on price."}
+      ],
+      channels:{instagram:1, facebook:0.6, google:0.7, website:0.35, whatsapp:0.75, youtube:0.4, influencers:0.55, offline:0.5},
+      pillars:["Transformation stories with consent","Trainer expertise and personality","Workout demonstrations and form tips","Community and events","Nutrition guidance","Facility and equipment"],
+      ideas:["A weekly form check reel correcting a common mistake","Member of the month spotlight interview","A thirty day challenge documented publicly","A trainer answering common beginner questions"],
+      funnelNotes:[
+        "Energetic brand content reaches a cold local audience.",
+        "Organic reels build familiarity and trust before any ask.",
+        "A free trial class or consultation is the entry point offer.",
+        "A fast, warm follow up within the hour decides the booking.",
+        "Membership signup is closed in person and tracked to source.",
+        "Lapsed members and unfinished trial forms are brought back."
+      ],
+      phaseNotes:[
+        "Set the content rhythm, fix Google profile and trial funnel.",
+        "Publish consistently, launch trial offer ads, build early community.",
+        "Scale trial bookings with tighter targeting and faster follow up.",
+        "Structure the first thirty days to protect against early churn.",
+        "Layer in referral incentives, events and corporate tie ups."
+      ],
+      kpis:["Cost per trial booking","Trial to membership conversion rate","Thirty and ninety day churn rate","Google review count and rating","Referral share of new signups"],
+      services:["Content and reels production","Meta and Google trial campaigns","Trial focused landing page","WhatsApp automation setup","Monthly churn and trial reporting"],
+      take:"Most gyms market like they sell equipment when they should market like they sell belonging. Content and ads should always tie back to community and coaching quality, because a great trial offer only works if what happens after signup earns the renewal."
+    },
+    {
+      id:"education", name:"Education", icon:"education",
+      sub:"Schools, Colleges, Training Institutes, EdTech, Professional Courses",
+      tag:"Trust built months before admissions",
+      description:"Admission decisions look sudden but are researched for months. Institutes that show up all year convert faster when the window opens.",
+      snapshot:{
+        customerType:"Parents deciding for children, students deciding for themselves",
+        primaryGoal:"Fill admission seats within a defined window and build lasting reputation",
+        platforms:"Facebook, Instagram, Google, YouTube, WhatsApp",
+        coreOffer:"Admissions to a program, course or batch, tied to an academic calendar",
+        conversion:"Enquiry form or call, then campus visit or counseling"
+      },
+      opportunities:[
+        {title:"Faculty credibility compounds", desc:"Shown consistently, not just during admissions, it builds trust no rival can copy quickly."},
+        {title:"Outcome proof converts", desc:"Specific placement and alumni data beats generic quality claims every time."},
+        {title:"Off season content shortens the cycle", desc:"Warm, trusted families decide faster once the admission window actually opens."},
+        {title:"Regional language connects", desc:"Malayalam explainer reels reach parents far more directly than English only content."}
+      ],
+      channels:{instagram:0.65, facebook:0.85, google:0.8, website:0.6, whatsapp:0.8, youtube:0.6, influencers:0.25, offline:0.5},
+      pillars:["Faculty expertise and credentials","Student and alumni success","Campus life and facilities","Course and career clarity","Placement and outcome proof","Parent focused reassurance"],
+      ideas:["Faculty answering the top questions parents ask before enrolling","Alumni sharing their career path in under a minute","An honest campus tour reel","A countdown building urgency toward the deadline"],
+      funnelNotes:[
+        "Introduce the institute and flagship programs to local families.",
+        "Faculty and student stories build familiarity well before admissions.",
+        "Program specific lead ads qualify interest with fee and eligibility upfront.",
+        "A campus visit, counseling call or demo class moves things forward.",
+        "Confirmed admission is tracked back to the original enquiry source.",
+        "Brochure viewers and paused enquiries are brought back before deadlines."
+      ],
+      phaseNotes:[
+        "Build faculty and alumni content library during the off season.",
+        "Keep a light always on presence and grow the enquiry list.",
+        "Ramp lead ads and launch program specific pages before the window opens.",
+        "Monitor response time daily and optimize spend toward strong programs.",
+        "Collect testimonials from new families and plan the next off season."
+      ],
+      kpis:["Cost per confirmed admission","Enquiry to campus visit rate","Response time during peak season","Brochure download volume","Referral driven admissions share"],
+      services:["Year round content production","Seasonal admission campaign management","Program specific landing pages","WhatsApp counseling system","Admission season reporting"],
+      take:"Institutes that only show up during their enrollment window are always working uphill against ones that have been building trust quietly all year. Off season content deserves the same seriousness as peak season ads, because that is what actually shortens the decision."
+    },
+    {
+      id:"realestate", name:"Real Estate", icon:"realestate",
+      sub:"Builders, Developers, Agencies, Property Projects, Architecture",
+      tag:"Patience proves the promise",
+      description:"A booking rarely follows the first ad. It follows months of visible proof that the project is real and on track.",
+      snapshot:{
+        customerType:"Buyers and investors, including NRI buyers researching remotely",
+        primaryGoal:"Fill site visits and close bookings within a long, considered sales cycle",
+        platforms:"Facebook, Instagram, Google, YouTube, WhatsApp",
+        coreOffer:"Apartments, villas, plots or commercial spaces tied to a specific project",
+        conversion:"Site visit followed by a booking"
+      },
+      opportunities:[
+        {title:"Construction proof builds trust", desc:"Consistent progress content is rarely done well by competitors and reassures every buyer type."},
+        {title:"Remote buyers need remote proof", desc:"Drone footage and walkthroughs let NRI buyers shortlist a project without visiting first."},
+        {title:"Long retargeting windows work", desc:"Matching ad cadence to the real decision timeline outperforms short campaign bursts."},
+        {title:"Referrals carry real weight", desc:"A satisfied buyer's recommendation influences family and friends more than any ad."}
+      ],
+      channels:{instagram:0.75, facebook:0.85, google:0.85, website:0.8, whatsapp:0.7, youtube:0.75, influencers:0.35, offline:0.45},
+      pillars:["Construction progress and quality proof","Amenities and lifestyle","Location advantages","Legal and documentation clarity","Buyer and investor testimonials","Builder track record"],
+      ideas:["Monthly drone footage showing progress clearly","A virtual walkthrough that feels like an in person visit","A legal clarity series addressing hesitant questions","Buyer testimonials explaining why they chose this project"],
+      funnelNotes:[
+        "Introduce the project to a relevant local and investor audience.",
+        "Progress updates and lifestyle visuals build familiarity over months.",
+        "Site visit incentives qualify budget and timeline upfront.",
+        "The visit itself is treated as a fully prepared sales moment.",
+        "Confirmed booking is tracked from lead source to signed agreement.",
+        "Extended retargeting reaches visitors still deciding months later."
+      ],
+      phaseNotes:[
+        "Build the project landing page and first construction content.",
+        "Launch site visit campaigns and establish a steady update rhythm.",
+        "Expand targeting including a dedicated NRI campaign track.",
+        "Sharpen the site visit experience and follow up discipline.",
+        "Lean on buyer referrals and testimonials to sustain bookings."
+      ],
+      kpis:["Cost per site visit booking","Site visit to booking conversion","Lead quality by qualified budget","NRI segment conversion","Referral driven bookings share"],
+      services:["Project landing page","Drone and walkthrough video production","Meta and Google lead campaigns","WhatsApp CRM setup","Construction update content through possession"],
+      take:"Real estate marketing fails when it is treated as a sprint instead of the marathon it actually is. The developers who win are still showing up in a buyer's feed six months later with visible progress that proves the promise is being kept."
+    },
+    {
+      id:"food", name:"Food and Beverage", icon:"food",
+      sub:"Restaurants, Cafes, Bakeries, Cloud Kitchens, Food Brands",
+      tag:"Appetite before information",
+      description:"A craving is decided in seconds. Content that makes someone hungry beats any caption explaining why the food is good.",
+      snapshot:{
+        customerType:"Local diners and delivery customers deciding in the moment",
+        primaryGoal:"Fill quiet hours, grow delivery orders and build repeat visits",
+        platforms:"Instagram, Google, Facebook, WhatsApp",
+        coreOffer:"Dine in experience, delivery orders, catering, packaged products",
+        conversion:"Walk in, table booking or delivery order"
+      },
+      opportunities:[
+        {title:"Process content outperforms plates", desc:"Watching a dish get made adds a story that a plain food photo cannot."},
+        {title:"Direct ordering reduces commission", desc:"A WhatsApp catalog and loyalty channel builds a relationship the delivery app does not own."},
+        {title:"Near me search converts fast", desc:"A strong Google presence captures decisions that happen in under a minute."},
+        {title:"A recognizable personality sticks", desc:"A chef, owner or brand voice turns an outlet into a place people feel connected to."}
+      ],
+      channels:{instagram:1, facebook:0.55, google:0.9, website:0.4, whatsapp:0.75, youtube:0.3, influencers:0.6, offline:0.35},
+      pillars:["Signature dish showcases","Behind the scenes preparation","Ambience and experience","Customer reactions","Offers and limited time items","Founder or chef story"],
+      ideas:["A close up slow motion reel of a signature dish being plated","A guess the ingredient interactive reel","Customer reaction videos captured naturally, with consent","A countdown building urgency around a seasonal item"],
+      funnelNotes:[
+        "Signature dishes and ambience reach a local cold audience.",
+        "Appetite led reels build familiarity and craving continuously.",
+        "Interest converts directly into a delivery click or booking message.",
+        "The first order or visit either wins or loses the customer permanently.",
+        "Completed orders are tracked back to the originating content.",
+        "Menu viewers who did not order get a small first order incentive."
+      ],
+      phaseNotes:[
+        "Set the visual content rhythm and clean up the Google profile.",
+        "Publish consistently and launch an introductory offer campaign.",
+        "Push near me search visibility and peak hour ad boosting.",
+        "Build the WhatsApp ordering channel to reduce platform dependency.",
+        "Layer in loyalty and referral offers for repeat customers."
+      ],
+      kpis:["Cost per order or table booking","Google review count and response time","Repeat customer rate","Direct WhatsApp order share","Engagement on food visuals"],
+      services:["Content and reels production","Meta ad management for offers","Google Business Profile management","WhatsApp ordering and loyalty setup","Monthly performance reporting"],
+      take:"In food and beverage the algorithm rewards appetite, not information. Content strategy here should chase that immediate craving first, then use offers and local search presence to convert it into an order before it fades."
+    },
+    {
+      id:"fashion", name:"Fashion and Jewellery", icon:"fashion",
+      sub:"Fashion Brands, Boutiques, Jewellery, Bridal, Beauty",
+      tag:"Seeing it worn sells it",
+      description:"A perfectly lit product photo rarely convinces like a real person wearing the piece at an actual wedding, laughing, living in it.",
+      snapshot:{
+        customerType:"Style and occasion driven buyers, including bridal customers",
+        primaryGoal:"Drive everyday sales while capturing high value occasion purchases",
+        platforms:"Instagram, Pinterest, WhatsApp, Facebook",
+        coreOffer:"Ready to wear collections, bridal orders, jewellery, beauty",
+        conversion:"Instagram or WhatsApp enquiry, then in store visit for high value pieces"
+      },
+      opportunities:[
+        {title:"Styling beats plain product shots", desc:"Outfit inspiration content builds a following that trusts the brand's taste."},
+        {title:"Craftsmanship justifies price", desc:"Behind the scenes process content builds trust that supports premium pricing."},
+        {title:"WhatsApp catalogs convert", desc:"An organized catalog captures buyers who want convenience without a full store build."},
+        {title:"Festival windows are brief but large", desc:"A planned calendar captures a disproportionate share of the year's revenue."}
+      ],
+      channels:{instagram:1, facebook:0.5, google:0.5, website:0.5, whatsapp:0.8, youtube:0.25, influencers:0.7, offline:0.4},
+      pillars:["New collection reveals","Styling and occasion inspiration","Craftsmanship process","Customer features at real events","Pricing transparency","Festival campaigns"],
+      ideas:["A styling reel showing one piece worn three ways","A craftsmanship video from start to finish","A customer feature series at real weddings and events","A festival lookbook released well ahead of season"],
+      funnelNotes:[
+        "The brand's aesthetic and flagship pieces reach a cold style led audience.",
+        "A following builds through consistent, taste led content over time.",
+        "DMs and WhatsApp carry enquiries rather than a traditional form.",
+        "A personal, unhurried consultation supports high value decisions.",
+        "Completed orders are tracked back to the originating enquiry.",
+        "Browsers who did not enquire are reached again before festival deadlines."
+      ],
+      phaseNotes:[
+        "Build the styling content library and organize the WhatsApp catalog.",
+        "Publish consistently and grow a taste led following.",
+        "Launch festival and collection campaigns with clear pricing.",
+        "Tighten enquiry response and consultation experience.",
+        "Layer in referral incentives, especially through bridal networks."
+      ],
+      kpis:["Enquiry to sale conversion by segment","Save and share rate on styling content","Catalog to enquiry conversion","Referral share of high value sales","Festival campaign performance year on year"],
+      services:["Content and styling shoots","Meta ad management for launches","WhatsApp catalog and CRM setup","Lookbook photography and video","Festival and bridal season campaigns"],
+      take:"Fashion and jewellery marketing succeeds when the audience can picture themselves in the piece. Strategy should always push toward showing pieces in real life rather than only in a studio, because that shortens the gap between admiring and buying."
+    },
+    {
+      id:"construction", name:"Construction and Design", icon:"construction",
+      sub:"Construction, Architecture, Interior Design, Furniture, Home Design",
+      tag:"Quiet trust, built visibly",
+      description:"The sale rarely happens on the first visit to a page. It happens after someone has quietly watched the work develop for weeks.",
+      snapshot:{
+        customerType:"Homeowners and developers making a considered, high value decision",
+        primaryGoal:"Generate qualified project enquiries and a portfolio driven reputation",
+        platforms:"Instagram, Pinterest, Google, WhatsApp",
+        coreOffer:"Construction contracts, design services, interior packages, furniture",
+        conversion:"Consultation call or site visit, then a signed contract"
+      },
+      opportunities:[
+        {title:"Process transparency builds trust", desc:"Showing the messy middle, not just before and after, is rarely done well by rivals."},
+        {title:"Education removes anxiety", desc:"Honest content on budget and timeline answers the questions people are afraid to ask."},
+        {title:"Client reaction videos persuade", desc:"A homeowner reacting to their finished space is highly effective and still underused."},
+        {title:"Local search is under contested", desc:"Proper investment can capture a disproportionate share of high intent searches."}
+      ],
+      channels:{instagram:0.9, facebook:0.6, google:0.75, website:0.85, whatsapp:0.65, youtube:0.5, influencers:0.4, offline:0.4},
+      pillars:["Before and after transformations","Process and behind the scenes","Design education","Client testimonials and walkthroughs","Team and craftsmanship","Material and finish showcases"],
+      ideas:["A time lapse style reel of a full transformation","An honest budget breakdown post by project type","A client walkthrough video with real reactions","A day in the life reel following the team on site"],
+      funnelNotes:[
+        "The firm's portfolio and philosophy reach a relevant homeowner audience.",
+        "Process and education content build trust over an extended period.",
+        "A free consultation offers a low commitment entry point.",
+        "A well prepared consultation or site visit moves the decision forward.",
+        "A signed contract is tracked from the original enquiry source.",
+        "Portfolio visitors who have not enquired are reached again over time."
+      ],
+      phaseNotes:[
+        "Build a strong, categorized portfolio and content foundation.",
+        "Publish process content consistently to build visible trust.",
+        "Launch consultation offer campaigns with clear budget guidance.",
+        "Tighten the consultation experience and CRM follow up.",
+        "Lean on client walkthroughs and referrals to sustain the pipeline."
+      ],
+      kpis:["Cost per consultation booking","Consultation to signed contract rate","Portfolio engagement time","Google review trend","Referral share of pipeline"],
+      services:["Portfolio content production","Process and behind the scenes video","Meta and Google consultation campaigns","Professional portfolio website","CRM setup for long sales cycles"],
+      take:"In construction and design, trust is earned quietly over weeks, not won in a single dramatic post. Content strategy should be built around consistent, honest process content rather than chasing one perfect before and after to do all the convincing."
+    },
+    {
+      id:"retail", name:"Retail and Local Business", icon:"retail",
+      sub:"Retail Stores, Supermarkets, Electronics, Automotive, Local Businesses",
+      tag:"Consistency beats budget",
+      description:"Most local competitors barely try online. A store that simply shows up reliably on Google usually wins the search that matters.",
+      snapshot:{
+        customerType:"Local shoppers driven by convenience, price and immediate need",
+        primaryGoal:"Drive consistent footfall and grow basket size per visit",
+        platforms:"Google, Facebook, Instagram, WhatsApp",
+        coreOffer:"Everyday products, higher value items, general local services",
+        conversion:"In store visit, sometimes preceded by a phone or WhatsApp check"
+      },
+      opportunities:[
+        {title:"Near me search is wide open", desc:"A well maintained Google profile captures searches most local rivals have not claimed properly."},
+        {title:"WhatsApp reduces platform dependency", desc:"Direct catalogs and broadcasts build a relationship no algorithm controls."},
+        {title:"Education wins electronics buyers", desc:"Comparison content builds authority that plain product photos cannot."},
+        {title:"Loyalty is rarely done well locally", desc:"A simple repeat purchase program is an easy differentiation opportunity."}
+      ],
+      channels:{instagram:0.5, facebook:0.7, google:1, website:0.35, whatsapp:0.75, youtube:0.3, influencers:0.35, offline:0.55},
+      pillars:["New arrivals and stock highlights","Staff expertise and picks","Offers and seasonal promotions","Product education and comparison","Community involvement","Customer reviews"],
+      ideas:["A quick reel introducing new stock as it arrives","A staff pick series with a personal reason","A side by side comparison video for electronics","A community spotlight featuring a local partnership"],
+      funnelNotes:[
+        "The store and its categories reach a cold local audience.",
+        "Staff personality and product education build familiarity over time.",
+        "Interest in a specific product is captured before a visit.",
+        "A visit or a phone check on availability moves things forward.",
+        "The completed purchase is tracked back where possible to its source.",
+        "Interested browsers who have not visited are reached again."
+      ],
+      phaseNotes:[
+        "Clean up and fully complete the Google Business Profile.",
+        "Publish consistently and launch a first offer campaign.",
+        "Push near me visibility and category specific ad targeting.",
+        "Build the WhatsApp broadcast list and catalog.",
+        "Layer in loyalty and referral incentives for repeat visits."
+      ],
+      kpis:["Google profile calls and direction requests","Review count and rating trend","Cost per enquiry for high value categories","Repeat customer rate","Offer redemption rate"],
+      services:["Google Business Profile management","Monthly content and offer promotion","Meta ad management for seasonal campaigns","WhatsApp catalog and broadcast setup","Loyalty program design"],
+      take:"Local retail marketing rewards consistency more than almost any other category, since most competitors are barely trying online. Showing up reliably on Google and treating WhatsApp as a real relationship channel usually beats a much bigger budget spent carelessly."
+    }
+  ];
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function svgIcon(name, size){
+    return '<svg width="'+(size||18)+'" height="'+(size||18)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+icon(name)+'</svg>';
+  }
+
+  function strategyCount(ind){
+    return ind.opportunities.length + ind.pillars.length + ind.ideas.length + ind.kpis.length + ind.services.length + PHASES.length;
+  }
+
+  /* ================= HOME RENDER ================= */
+
+  function renderHome(){
+    var totalStrategies = INDUSTRIES.reduce(function(sum, i){ return sum + strategyCount(i); }, 0);
+
+    var html = '';
+
+    html += '<section class="hero" id="hero">'+
+      '<div class="wrap hero-grid">'+
+        '<div>'+
+          '<div class="eyebrow">Adoliy Strategy Intelligence</div>'+
+          '<h1>Industry Growth<br><span>Playbook</span></h1>'+
+          '<p class="hero-sub">Prebuilt strategies. Smarter proposals. Faster growth planning.</p>'+
+          '<div class="status-row">'+
+            '<span class="status-ready"><span class="live-dot" style="width:7px;height:7px;"></span> System Ready</span>'+
+            '<span>'+INDUSTRIES.length+' Industries &middot; '+totalStrategies+' Strategies &middot; 7 Growth Systems</span>'+
+          '</div>'+
+          '<div class="stat-strip">'+
+            '<div class="stat"><b>'+INDUSTRIES.length+'</b><span>Industries mapped</span></div>'+
+            '<div class="stat"><b>'+totalStrategies+'</b><span>Strategy modules</span></div>'+
+            '<div class="stat"><b>6</b><span>Marketing systems</span></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="hero-visual"><div class="hero-visual-ring"></div><canvas id="heroCanvas"></canvas></div>'+
+      '</div>'+
+    '</section>';
+
+    html += '<section class="section" id="explorer">'+
+      '<div class="wrap">'+
+        '<div class="section-head"><div class="eyebrow">Explore Industries</div><h2>Select an industry to access its complete growth strategy.</h2><p>Every card below is a full internal playbook: opportunities, platforms, content, ad strategy, funnel and KPIs, ready to shape into a client proposal.</p></div>'+
+        '<div class="industry-grid">'+
+          INDUSTRIES.map(function(ind){
+            return '<button class="industry-card" data-open="'+ind.id+'">'+
+              '<div class="industry-icon">'+svgIcon(ind.icon,20)+'</div>'+
+              '<h3>'+esc(ind.name)+'</h3>'+
+              '<div class="sub">'+esc(ind.sub)+'</div>'+
+              '<div class="desc">'+esc(ind.description)+'</div>'+
+              '<div class="foot"><span>'+strategyCount(ind)+' Strategies</span><span class="go">Explore <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>'+
+            '</button>';
+          }).join('')+
+        '</div>'+
+      '</div>'+
+    '</section>';
+
+    html += '<section class="section" id="growth-system">'+
+      '<div class="wrap">'+
+        '<div class="section-head"><div class="eyebrow">The Adoliy Growth System</div><h2>One method, run for every industry.</h2><p>Seven stages carry every client from a cold market to a growing, referring customer base.</p></div>'+
+        '<div class="flow-wrap">'+
+          '<div class="flow-line"><div class="flow-line-glow"></div></div>'+
+          '<div class="flow-track">'+
+            GROWTH_SYSTEM.map(function(step, i){
+              return '<div class="flow-step"><div class="flow-node">0'+(i+1)+'</div><h4>'+step+'</h4></div>';
+            }).join('')+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</section>';
+
+    html += '<section class="section" id="modules">'+
+      '<div class="wrap">'+
+        '<div class="section-head"><div class="eyebrow">Strategy Modules</div><h2>The building blocks behind every playbook.</h2><p>Every industry page below draws from these same six systems, tuned to that industry’s customer and buying behavior.</p></div>'+
+        '<div class="module-grid">'+
+          MODULES.map(function(m){
+            return '<div class="module-card"><div class="n">'+m.n+'</div><h3>'+m.name+'</h3><p>'+m.desc+'</p></div>';
+          }).join('')+
+        '</div>'+
+      '</div>'+
+    '</section>';
+
+    document.getElementById('app').innerHTML = html;
+    initHeroCanvas();
+  }
+
+  /* ================= INDUSTRY RENDER ================= */
+
+  var TABS = ["Overview","Opportunities","Ecosystem","Content","Ad Engine","Phases","KPIs"];
+
+  function renderIndustry(id){
+    var ind = INDUSTRIES.filter(function(i){ return i.id === id; })[0];
+    if(!ind){ renderHome(); return; }
+
+    var snap = ind.snapshot;
+    var maxChan = Math.max.apply(null, CHANNELS.map(function(c){ return ind.channels[c.toLowerCase()] || 0; }));
+
+    var html = '<section class="ind-hero"><div class="wrap">'+
+      '<button class="back-btn" data-nav="home"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> All Industries</button>'+
+      '<div class="tag">Industry Growth Strategy</div>'+
+      '<h1>'+esc(ind.name)+'</h1>'+
+      '<p class="sub-desc">'+esc(ind.description)+'</p>'+
+      '</div></section>';
+
+    html += '<div class="wrap">';
+
+    html += '<div class="tabbar" role="tablist">'+
+      TABS.map(function(t, i){ return '<button data-tab="'+i+'" class="'+(i===0?'active':'')+'">'+t+'</button>'; }).join('')+
+    '</div>';
+
+    // Overview panel
+    html += '<div class="panel active" data-panel="0">'+
+      '<h3 class="subhead">Industry Snapshot</h3>'+
+      '<div class="snap-grid">'+
+        '<div class="snap-card"><div class="k">Customer Type</div><div class="v">'+esc(snap.customerType)+'</div></div>'+
+        '<div class="snap-card"><div class="k">Primary Goal</div><div class="v">'+esc(snap.primaryGoal)+'</div></div>'+
+        '<div class="snap-card"><div class="k">Best Platforms</div><div class="v">'+esc(snap.platforms)+'</div></div>'+
+        '<div class="snap-card"><div class="k">Core Offer</div><div class="v">'+esc(snap.coreOffer)+'</div></div>'+
+        '<div class="snap-card"><div class="k">Conversion Method</div><div class="v">'+esc(snap.conversion)+'</div></div>'+
+      '</div>'+
+    '</div>';
+
+    // Opportunities panel
+    html += '<div class="panel" data-panel="1">'+
+      '<h3 class="subhead">Growth Opportunities</h3>'+
+      '<div class="opp-grid">'+
+        ind.opportunities.map(function(o){
+          return '<details class="opp-card"><summary>'+esc(o.title)+'<span class="plus">+</span></summary><div class="body">'+esc(o.desc)+'</div></details>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+
+    // Ecosystem panel
+    html += '<div class="panel" data-panel="2">'+
+      '<h3 class="subhead">Marketing Ecosystem</h3>'+
+      '<div class="eco-wrap"><div class="eco-diagram">'+
+        CHANNELS.map(function(c){
+          var w = ind.channels[c.toLowerCase()] || 0.2;
+          var strong = w >= 0.6 ? ' strong' : '';
+          return '<div class="eco-node'+strong+'"><div class="eco-dot" style="opacity:'+(0.45+w*0.55).toFixed(2)+'">'+Math.round(w*100)+'%</div><span>'+c+'</span></div>';
+        }).join('')+
+      '</div></div>'+
+      '<h3 class="subhead" style="margin-top:44px;">Content Engine</h3>'+
+      '<div class="pillar-grid">'+
+        ind.pillars.map(function(p){ return '<div class="pillar-chip">'+esc(p)+'</div>'; }).join('')+
+      '</div>'+
+    '</div>';
+
+    // Content panel (creative ideas)
+    html += '<div class="panel" data-panel="3">'+
+      '<h3 class="subhead">Creative Ideas</h3>'+
+      '<div class="idea-list">'+
+        ind.ideas.map(function(idea){ return '<div class="idea-row"><span class="dot"></span>'+esc(idea)+'</div>'; }).join('')+
+      '</div>'+
+    '</div>';
+
+    // Ad Engine panel
+    html += '<div class="panel" data-panel="4">'+
+      '<h3 class="subhead">Ad Engine</h3>'+
+      '<div class="funnel-track">'+
+        FUNNEL.map(function(f, i){
+          return '<div class="funnel-step"><div class="num">0'+(i+1)+'</div><h5>'+f+'</h5><p>'+esc(ind.funnelNotes[i])+'</p></div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+
+    // Phases panel
+    html += '<div class="panel" data-panel="5">'+
+      '<h3 class="subhead">Growth Phases</h3>'+
+      '<div class="phase-track">'+
+        PHASES.map(function(ph, i){
+          return '<div class="phase-row"><div class="phase-num">0'+(i+1)+'</div><div class="phase-body"><h5>'+ph+'</h5><p>'+esc(ind.phaseNotes[i])+'</p></div></div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+
+    // KPIs panel
+    html += '<div class="panel" data-panel="6">'+
+      '<h3 class="subhead">KPIs To Track</h3>'+
+      '<div class="kpi-grid">'+
+        ind.kpis.map(function(k){
+          return '<div class="kpi-chip"><span class="ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 19V9M12 19V5M20 19v-7"/></svg></span>'+esc(k)+'</div>';
+        }).join('')+
+      '</div>'+
+      '<h3 class="subhead" style="margin-top:36px;">Possible Services</h3>'+
+      '<div class="service-list">'+
+        ind.services.map(function(s){ return '<div class="service-row">'+esc(s)+'<span class="tagpill">Adoliy</span></div>'; }).join('')+
+      '</div>'+
+    '</div>';
+
+    html += '<div class="take-block"><div class="eyebrow">Adoliy’s Take</div><p>'+esc(ind.take)+'</p></div>';
+
+    html += '<div style="height:80px;"></div></div>';
+
+    document.getElementById('app').innerHTML = html;
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    wireTabs();
+  }
+
+  function wireTabs(){
+    var app = document.getElementById('app');
+    var tabs = app.querySelectorAll('.tabbar button');
+    tabs.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        tabs.forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        app.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+        var target = app.querySelector('.panel[data-panel="'+btn.getAttribute('data-tab')+'"]');
+        if(target) target.classList.add('active');
+      });
+    });
+  }
+
+  /* ================= ROUTER ================= */
+
+  function route(){
+    var hash = window.location.hash.replace('#/','').replace('#','');
+    if(hash && hash.indexOf('industry/') === 0){
+      var id = hash.split('/')[1];
+      renderIndustry(id);
+      setActiveNav(null);
+    } else {
+      renderHome();
+      setActiveNav('hero');
+    }
+  }
+
+  function goHome(){ window.location.hash = ''; }
+  function goIndustry(id){ window.location.hash = '#/industry/'+id; }
+
+  function setActiveNav(section){
+    document.querySelectorAll('.nav-links button[data-scroll]').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-scroll') === section);
+    });
+  }
+
+  window.addEventListener('hashchange', route);
+
+  document.addEventListener('click', function(e){
+    var openBtn = e.target.closest('[data-open]');
+    if(openBtn){ goIndustry(openBtn.getAttribute('data-open')); return; }
+
+    var navBtn = e.target.closest('[data-nav="home"]');
+    if(navBtn){ goHome(); return; }
+
+    var scrollBtn = e.target.closest('[data-scroll]');
+    if(scrollBtn){
+      var wasOnIndustryPage = !!window.location.hash;
+      if(wasOnIndustryPage){ window.location.hash=''; }
+      setTimeout(function(){
+        var el = document.getElementById(scrollBtn.getAttribute('data-scroll'));
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+        setActiveNav(scrollBtn.getAttribute('data-scroll'));
+      }, wasOnIndustryPage ? 60 : 0);
+      return;
+    }
+  });
+
+  /* ================= SEARCH ================= */
+
+  var overlay = document.getElementById('searchOverlay');
+  var input = document.getElementById('searchInput');
+  var resultsBox = document.getElementById('searchResults');
+
+  function openSearch(){
+    overlay.hidden = false;
+    input.value='';
+    renderSearch('');
+    setTimeout(function(){ input.focus(); }, 30);
+  }
+  function closeSearch(){ overlay.hidden = true; }
+
+  function renderSearch(q){
+    q = q.trim().toLowerCase();
+    var pool = INDUSTRIES.map(function(i){ return {type:'Industry', id:i.id, label:i.name, sub:i.sub}; })
+      .concat(MODULES.map(function(m){ return {type:'Strategy', id:null, label:m.name, sub:m.desc}; }));
+    var matches = q ? pool.filter(function(p){ return (p.label+' '+p.sub).toLowerCase().indexOf(q) > -1; }) : pool;
+    if(!matches.length){ resultsBox.innerHTML = '<div class="search-empty">No matches. Try an industry or strategy name.</div>'; return; }
+    resultsBox.innerHTML = matches.map(function(m){
+      return '<button class="search-item" style="width:100%;text-align:left;border:none;background:none;font-family:inherit;" data-open="'+(m.id||'')+'" data-searchtype="'+m.type+'"><span><b>'+esc(m.label)+'</b> &middot; '+esc(m.sub)+'</span><span style="font-family:var(--mono);font-size:10px;color:var(--ink-faint);text-transform:uppercase;">'+m.type+'</span></button>';
+    }).join('');
+  }
+
+  document.getElementById('searchOpen').addEventListener('click', openSearch);
+  document.getElementById('searchClose').addEventListener('click', closeSearch);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeSearch(); });
+  input.addEventListener('input', function(){ renderSearch(input.value); });
+  resultsBox.addEventListener('click', function(e){
+    var item = e.target.closest('[data-open]');
+    if(item && item.getAttribute('data-open')){ closeSearch(); goIndustry(item.getAttribute('data-open')); }
+  });
+  document.addEventListener('keydown', function(e){
+    if((e.key==='k' || e.key==='K') && (e.metaKey||e.ctrlKey)){ e.preventDefault(); openSearch(); }
+    if(e.key==='Escape' && !overlay.hidden){ closeSearch(); }
+  });
+
+  /* ================= HERO CANVAS (network nodes) ================= */
+
+  function initHeroCanvas(){
+    var canvas = document.getElementById('heroCanvas');
+    if(!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var w, h, nodes = [];
+    var NODE_COUNT = 26;
+
+    function resize(){
+      var rect = canvas.parentElement.getBoundingClientRect();
+      w = canvas.width = rect.width * devicePixelRatio;
+      h = canvas.height = rect.height * devicePixelRatio;
+      canvas.style.width = rect.width+'px';
+      canvas.style.height = rect.height+'px';
+    }
+    function seed(){
+      nodes = [];
+      for(var i=0;i<NODE_COUNT;i++){
+        nodes.push({
+          x: Math.random()*w, y: Math.random()*h,
+          vx: (Math.random()-0.5)*0.15*devicePixelRatio,
+          vy: (Math.random()-0.5)*0.15*devicePixelRatio,
+          r: (Math.random()*1.6+1)*devicePixelRatio
+        });
+      }
+    }
+    function step(){
+      ctx.clearRect(0,0,w,h);
+      nodes.forEach(function(n){
+        n.x += n.vx; n.y += n.vy;
+        if(n.x<0||n.x>w) n.vx*=-1;
+        if(n.y<0||n.y>h) n.vy*=-1;
+      });
+      for(var i=0;i<nodes.length;i++){
+        for(var j=i+1;j<nodes.length;j++){
+          var a=nodes[i], b=nodes[j];
+          var dx=a.x-b.x, dy=a.y-b.y;
+          var dist = Math.sqrt(dx*dx+dy*dy);
+          var maxDist = 150*devicePixelRatio;
+          if(dist < maxDist){
+            ctx.strokeStyle = 'rgba(117,165,58,'+(0.22*(1-dist/maxDist))+')';
+            ctx.lineWidth = devicePixelRatio*0.7;
+            ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+          }
+        }
+      }
+      nodes.forEach(function(n){
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(164,221,99,0.85)';
+        ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        ctx.fill();
+      });
+      if(!reduced) requestAnimationFrame(step);
+    }
+    resize(); seed();
+    if(reduced){ step(); } else { step(); }
+    window.addEventListener('resize', function(){ resize(); seed(); });
+  }
+
+  /* ================= INIT ================= */
+
+  route();
+
+})();
+</script>
+
